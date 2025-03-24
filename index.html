@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prateleira de Livros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .preview {
+            width: 150px;
+            height: 225px;
+            margin: 20px auto;
+            margin-top: 0px;
+            background-size: cover;
+            background-position: center;
+            display: block;
+            background-image: url(img/livro.jpg);
+            border-radius: 10px;
+        }
+        .mostrar {
+            display: block;
+        }
+        .prateleira {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: #8B4513;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        .livro {
+            width: 50px;
+            height: 150px;
+            background-size: cover;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        @keyframes destaque {
+            0%, 100% { border: 4px solid red; }
+            50% { border: 4px solid yellow; }
+        }
+        .destaque {
+            animation: destaque 1s infinite alternate;
+        }
+        #linkLivro {
+            display: none;
+            margin-top: 10px;
+        }
+        #inputLivro {
+            width: 500px;
+            height: 180px;
+            font-size: 18px;
+            resize: none;
+            flex-grow: 1;
+            padding: 10px;
+        }
+        #container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        #textAreaEBotao {
+            display: grid;
+        }
+        button {
+            font-weight: bold;
+            background-color: #1E90FF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #4682B4;
+        }
+        ul {
+            list-style-type: decimal;
+            text-align: left;
+            margin-top: 20px;
+            padding-left: 30px;
+        }
+        ul ul {
+            list-style-type: circle;
+        }
+
+        /* Estilo adicional */
+        #container div h3 {
+            padding: 20px; /* Espaçamento em torno do título */
+        }
+        ul span {
+            font-family: Consolas, monospace;
+            font-weight: bold; /* Negrito */
+        }
+        li {
+            margin-bottom: 10px; /* Ajuste conforme necessário */
+        }
+    </style>
+</head>
+<body>
+    <h1>Escolha um livro</h1>    
+
+    <div id="container">
+        <div>
+            <div id="preview" class="preview"></div>
+            <a id="linkLivro" href="#" target="_blank">Acesse o livro</a>
+        </div>
+        <div id="textAreaEBotao">
+            <textarea id="inputLivro" placeholder="Siga as instruções ao lado."></textarea>
+            <button onclick="executarComando()">Executar</button>
+        </div>
+        <div>
+            <h3>Siga os passos abaixo para escolher um livro</h3>
+            <ul>
+                <li>Digite ao lado: <span>document.getElementById("Nome livro");</span></li>
+                <li>Clique no botão <b>Executar</b></li>
+                <li>Para mostrar a capa digite: <span>toggle('mostrar')</span></li>
+                <li>Clique novamente no botão <b>Executar</b></li>
+            </ul>
+        </div>
+    </div>    
+
+    <h1>Prateleira de Livros</h1>    
+    <div class="prateleira" id="prateleira"></div>
+
+    <script>
+        let livros = [
+            { titulo: "clara dos anjos", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=2060", imgCapa: "clara-dos-anjos.jpg", categoria: "romance" },
+            { titulo: "o mulato", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=16537", imgCapa: "o-mulato.jpg", categoria: "romance" },
+            { titulo: "iracema", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=1844", imgCapa: "iracema.jpg", categoria: "romance" },
+            { titulo: "tarde", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=1999", imgCapa: "tarde.jpg", categoria: "poesia" },
+            { titulo: "dom casmurro", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=2081", imgCapa: "dom-casmurro.jpg", categoria: "romance" },
+            { titulo: "o cortiço", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=1723", imgCapa: "o-cortiço.jpg", categoria: "naturalismo" },
+            { titulo: "o alienista", link: "http://www.dominiopublico.gov.br/pesquisa/DetalheObraForm.do?select_action=&co_obra=1939", imgCapa: "o-alienista.jpg", categoria: "conto" },
+            { titulo: "a chave do tamanho", link: "https://5ca0e999-de9a-47e0-9b77-7e3eeab0592c.usrfiles.com/ugd/5ca0e9_40ccd21099164aacaa200d03c56ebb77.pdf", imgCapa: "a-chave-do-tamanho.jpg", categoria: "infantil" },
+            { titulo: "vidas secas", link: "https://archivepublicdomain.com/files/2025/01/vidas-secas.pdf", imgCapa: "vidas-secas.jpg", categoria: "regionalismo" },
+            { titulo: "os sertões", link: "https://5ca0e999-de9a-47e0-9b77-7e3eeab0592c.usrfiles.com/ugd/5ca0e9_7b9cdae2b94e467699d0319e05c35acf.pdf", imgCapa: "os-sertões.jpg", categoria: "regionalismo" }
+        ];
+
+        function carregarLivros() {
+            const prateleira = document.getElementById("prateleira");
+            livros.forEach((livro) => {
+                let divLivro = document.createElement("div");
+                divLivro.classList.add("livro", livro.categoria);
+                divLivro.id = livro.titulo;
+                divLivro.style.backgroundImage = `url('img/lombada/${livro.imgCapa}')`;
+                divLivro.dataset.capa = `img/${livro.imgCapa}`;
+                divLivro.dataset.titulo = livro.titulo;
+                divLivro.dataset.link = livro.link;
+                prateleira.appendChild(divLivro);
+            });
+        }
+
+        carregarLivros();
+
+        let livrosSelecionados = [];
+
+        function executarComando() {
+            const input = document.getElementById("inputLivro").value.split('\n');
+            document.querySelectorAll('.livro').forEach(livro => livro.classList.remove('destaque'));
+            try {
+                input.forEach(comando => {
+                    if (comando.startsWith("document.getElementById")) {
+                        let livroId = comando.match(/['"](.*)['"]/)[1].toLowerCase();
+                        let livro = document.getElementById(livroId);
+                        if (livro && livro.classList.contains("livro")) {
+                            livro.classList.add("destaque");
+                            livrosSelecionados.push(livro);
+                        }
+                    } else if (comando.startsWith("document.querySelectorAll")) {
+                        let livros = eval(comando);
+                        livros.forEach(livro => {
+                            livro.classList.add("destaque");
+                            livrosSelecionados.push(livro);
+                        });
+                    } 
+                    if (livrosSelecionados.length > 0 && (comando.includes("toggle('mostrar')") || comando.includes("toggle") || comando.includes("toggle('mostrar')"))) {
+                        const preview = document.getElementById("preview");
+                        const linkLivro = document.getElementById("linkLivro");
+
+                        let ultimoLivro = livrosSelecionados[livrosSelecionados.length - 1]; // Pega o último livro selecionado
+                        if (ultimoLivro) {
+                            preview.style.backgroundImage = `url(${ultimoLivro.dataset.capa})`;
+                            preview.classList.toggle("mostrar");
+                            linkLivro.href = ultimoLivro.dataset.link;
+                            linkLivro.style.display = "block";
+                        }
+                    }
+                });
+            } catch (e) {
+                alert("Comando inválido ou livro não encontrado!");
+            }
+        }
+    </script>
+</body>
+</html>
