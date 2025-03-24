@@ -197,6 +197,13 @@
                             linkLivro.href = ultimoLivro.dataset.link;
                             linkLivro.style.display = "block";
                         }
+                    }else{
+                        const preview = document.getElementById("preview");
+                        const linkLivro = document.getElementById("linkLivro");
+                        preview.style.backgroundImage = 'url(img/livro.jpg)';
+                        preview.classList.toggle("mostrar");
+                        linkLivro.href = "#";
+                        linkLivro.style.display = "none";
                     }
                 });
             } catch (e) {
