@@ -165,9 +165,8 @@
 
         carregarLivros();
 
-        let livrosSelecionados = [];
-
         function executarComando() {
+            let livrosSelecionados = [];
             const input = document.getElementById("inputLivro").value.split('\n');
             document.querySelectorAll('.livro').forEach(livro => livro.classList.remove('destaque'));
             try {
